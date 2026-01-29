@@ -24,18 +24,22 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch("https://gaffis.net/pulse/public/api/accounts/login", {
+        // http://localhost:5000/api/auth/login
       // const res = await fetch("https://gaffis.in/nodeBackednServer/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
+        headers: { "Content-Type": "application/json", "Accept": "application/json",},
+        // credentials: "include",
+        body: JSON.stringify(
+          {
           email,
-          password,
-        }),
+          password
+        }
+      ),
       });
 
       const data = await res.json();
+      
 
       if (!res.ok) {
         setError(data.message || "Login failed");
@@ -104,12 +108,12 @@ export default function Home() {
       <div
         className="auth-wrapper d-flex no-block justify-content-center align-items-center"
         style={{
-          background: "url(/big/auth-bg.jpg) no-repeat center center",
+          background: "url(https://gaffis.com/images/sectionimages/bg/section_bg3.jpg) no-repeat center center", ///big/auth-bg.jpg
         }}
       >
         <div className="auth-box">
           <div className="logo text-center">
-            <Image src="/logo-icon.png" alt="logo" width={100} height={100} />
+            <Image src="/logo-icon.png" alt="logo" className="mx-auto" width={100} height={100} />
             <h5 className="font-medium mb-3">Sign In to Admin</h5>
           </div>
           {error && (

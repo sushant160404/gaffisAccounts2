@@ -15,7 +15,8 @@ app.use(
     origin: [
       "https://gaffis.in",
       "https://www.gaffis.in",
-      "http://localhost:3000"
+      "http://localhost:3000",
+      "http://157.173.218.30:3000/"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
