@@ -21,9 +21,10 @@ export default function Header() {
             <!-- -------------------------------------------------------------- --> */}
           <a className="navbar-brand" href="#">
             {/* <!-- Logo icon --> */}
-            <b className="logo-icon">
+            <b className="logo-icon mx-auto">
               {/* <!--You can put here icon as well // <i className="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon --> */}
+              <br /> {/* added */}
               <Image
                 height={60}
                 width={120}
@@ -32,28 +33,28 @@ export default function Header() {
                 className="dark-logo"
               />
               {/* <!-- Light Logo icon --> */}
-              <Image
+              {/* <Image
                 height={60}
                 width={120}
                 src="/logo-light-icon.png"
                 alt="homepage"
                 className="light-logo"
-              />
+              /> */}
             </b>
             {/* <!--End Logo icon -->
               <!-- Logo text --> */}
-            
+
             {/* <span className="logo-text"> */}
-              {/* <!-- dark Logo text --> */}
-              {/* <Image
+            {/* <!-- dark Logo text --> */}
+            {/* <Image
                 height={60}
                 width={120}
                 src="/logo-text.png"
                 alt="homepage"
                 className="dark-logo"
               /> */}
-              {/* <!-- Light Logo text --> */}
-              {/* <Image
+            {/* <!-- Light Logo text --> */}
+            {/* <Image
                 height={60}
                 width={120}
                 src="/logo-light-text.png"
@@ -61,7 +62,6 @@ export default function Header() {
                 alt="homepage"
               /> */}
             {/* </span> */}
-            
           </a>
           {/* <!-- -------------------------------------------------------------- -->
             <!-- End Logo -->
@@ -94,7 +94,7 @@ export default function Header() {
                 <i data-feather="menu" className="feather-sm"></i>
               </a>
             </li>
-            <li className="nav-item dropdown mega-dropdown">
+            {/* <li className="nav-item dropdown mega-dropdown">
               <a
                 className="nav-link dropdown-toggle waves-effect waves-dark"
                 role="button"
@@ -402,11 +402,11 @@ export default function Header() {
                   <i data-feather="x" className="feather-sm"></i>
                 </a>
               </form>
-            </li>
+            </li> */}
           </ul>
           {/*  Right side toggle and nav items */}
           <ul className="navbar-nav">
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"
@@ -435,7 +435,7 @@ export default function Header() {
                   <i className="me-2 flag-icon flag-icon-de"></i> German
                 </a>
               </div>
-            </li>
+            </li> */}
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle waves-effect waves-dark"

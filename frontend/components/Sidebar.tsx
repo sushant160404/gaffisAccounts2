@@ -10,6 +10,8 @@ export default function Sidebar() {
       <div className="scroll-sidebar">
         <nav className="sidebar-nav">
           <ul id="sidebarnav">
+            <br />
+            <br />
             <li>
               <div className="user-profile d-flex no-block dropdown mt-3">
                 <div className="user-pic">
@@ -82,7 +84,7 @@ export default function Sidebar() {
                 </div>
               </div>
             </li>
-            <li className="p-3 mt-2">
+            {/* <li className="p-3 mt-2">
               <a
                 href="#"
                 className="btn btn-block create-btn text-white no-block d-flex align-items-center"
@@ -90,29 +92,31 @@ export default function Sidebar() {
                 <i data-feather="plus-square" className="feather-sm"></i>
                 <span className="hide-menu ms-1">Create New</span>
               </a>
-            </li>
-            <li className="nav-small-cap">
+            </li> */}
+            {/* <li className="nav-small-cap">
               <i className="mdi mdi-dots-horizontal"></i>
               <span className="hide-menu">Personal</span>
-            </li>
+            </li> */}
+            {/* sidebar tab - dashboard  */}
             <li className="sidebar-item">
               <a
-                className="sidebar-link has-arrow waves-effect waves-dark"
-                href="#"
+                className="sidebar-link waves-effect waves-dark"
+                href="/dashboard"
                 aria-expanded="false"
               >
                 <i data-feather="home" className="feather-icon"></i>
-                <span className="hide-menu">Dashboard </span>
+                <span className="hide-menu"> Dashboard </span>
               </a>
-              <ul className="collapse first-level">
+              {/* <ul className="collapse first-level">
                 <li className="sidebar-item">
                   <a href="#" className="sidebar-link">
                     <i className="mdi mdi-adjust"></i>
                     <span className="hide-menu"> Classic </span>
                   </a>
                 </li>
-              </ul>
+              </ul> */}
             </li>
+            {/* sidebar tab - sidebar type */}
             <li className="sidebar-item">
               <a
                 className="sidebar-link has-arrow waves-effect waves-dark"
@@ -120,23 +124,25 @@ export default function Sidebar() {
                 aria-expanded="false"
               >
                 <i data-feather="sidebar" className="feather-icon"></i>
-                <span className="hide-menu">Sidebar Type </span>
+                <span className="hide-menu"> Payroll </span>
               </a>
               <ul className="collapse first-level">
-                <li className="sidebar-item">
-                  <a href="#" className="sidebar-link">
-                    <i className="mdi mdi-view-quilt"></i>
-                    <span className="hide-menu"> Minisidebar </span>
+                <li className="visible sidebar-item">
+                  <a href="/payroll" className="sidebar-link">
+                    {/* <i className="mdi mdi-view-quilt"></i> */}
+                    <span className="hide-menu ps-8">Payroll </span>
                   </a>
                 </li>
               </ul>
             </li>
-
+            <li></li>
+            {/* sidebar tab - logout  */}
             <li className="sidebar-item">
               <a
                 className="sidebar-link waves-effect waves-dark sidebar-link"
                 href="#"
                 aria-expanded="false"
+                onClick={logout}
               >
                 <i data-feather="log-out" className="feather-icon"></i>
                 <span className="hide-menu">Log Out</span>
