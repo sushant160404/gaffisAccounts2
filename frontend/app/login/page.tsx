@@ -47,6 +47,7 @@ export default function Home() {
         return;
       }
 
+      
       // ✅ Login success
       localStorage.setItem("isLoggedIn", "true");
       router.push("/dashboard");
