@@ -8,7 +8,6 @@ import { Eye, Pencil, Download } from "lucide-react";
 export default function EmployeeDashboard() {
 
   const router = useRouter();
-    
     // imp
     useEffect(() => {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -19,7 +18,7 @@ export default function EmployeeDashboard() {
     
   return (
     <div className="page-wrapper">
-      <div className="page-breadcrumb">
+      <div className="pt-4 pr-5 pl-5">
         <div className="row">
           <div className="col-5 align-self-center">
             <h4 className="page-title">Payroll</h4>

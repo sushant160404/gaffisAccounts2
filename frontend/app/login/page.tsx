@@ -24,22 +24,25 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://gaffis.net/pulse/public/api/accounts/login", {
-        // http://localhost:5000/api/auth/login
-      // const res = await fetch("https://gaffis.in/nodeBackednServer/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json",},
-        // credentials: "include",
-        body: JSON.stringify(
-          {
-          email,
-          password
-        }
-      ),
-      });
+      const res = await fetch(
+        "https://gaffis.net/pulse/public/api/accounts/login",
+        {
+          // http://localhost:5000/api/auth/login
+          // const res = await fetch("https://gaffis.in/nodeBackednServer/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          // credentials: "include",
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        },
+      );
 
       const data = await res.json();
-      
 
       if (!res.ok) {
         setError(data.message || "Login failed");
@@ -47,7 +50,6 @@ export default function Home() {
         return;
       }
 
-      
       // ✅ Login success
       localStorage.setItem("isLoggedIn", "true");
       router.push("/dashboard");
@@ -59,7 +61,6 @@ export default function Home() {
   };
   return (
     <div className="main-wrapper">
-
       {/* PRELOADER */}
       {loading && (
         <div className="preloader">
@@ -109,20 +110,24 @@ export default function Home() {
       <div
         className="auth-wrapper d-flex no-block justify-content-center align-items-center"
         style={{
-          background: "url(https://gaffis.com/images/sectionimages/bg/section_bg3.jpg) no-repeat center center", ///big/auth-bg.jpg
+          background:
+            "url(https://gaffis.com/images/sectionimages/bg/section_bg3.jpg) no-repeat center center", ///big/auth-bg.jpg
         }}
       >
         <div className="auth-box">
           <div className="logo text-center">
-            <Image src="/logo-icon.png" alt="logo" className="mx-auto" width={100} height={100} />
+            <Image
+              src="/logo-icon.png"
+              alt="logo"
+              className="mx-auto"
+              width={100}
+              height={100}
+            />
             <h5 className="font-medium mb-3">Sign In to Admin</h5>
           </div>
-          {error && (
-            <div className="alert alert-danger">{error}</div>
-          )}
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <form onSubmit={handleSubmit} className="form-horizontal mt-3">
-
             <div className="input-group mb-3">
               <span className="input-group-text">
                 <i className="ri-user-fill"></i>
@@ -181,7 +186,6 @@ export default function Home() {
                 <b>Sign Up</b>
               </a>
             </div>
-
           </form>
         </div>
       </div>

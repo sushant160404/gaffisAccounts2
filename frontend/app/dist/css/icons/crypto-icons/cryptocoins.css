@@ -1,27 +1,27 @@
-/*! Cryptocoins - cryptocurrency icon font | https://github.com/allienworks/cryptocoins */
+! Cryptocoins - cryptocurrency icon font | https://github.com/allienworks/cryptocoins */
 
-@font-face {
+/* @font-face {
     font-family: "cryptocoins";
     src: url('cryptocoins.woff2') format('woff2'),
     url('cryptocoins.woff') format('woff'),
     url('cryptocoins.ttf') format('truetype');
-}
+} */
 
 
 /* .cc:before { */
 
-.cc::before {
+/* .cc::before {
     font-family: "cryptocoins";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-style: normal;
     font-variant: normal;
-    font-weight: normal;
+    font-weight: normal; */
     /* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
-    text-decoration: none;
+    /* text-decoration: none;
     text-transform: none;
-}
-
+} */
+/* 
 .ADA {
     color: #3CC8C8;
 }
@@ -1723,4 +1723,4 @@
 
 .cc.ZEIT::before {
     content: "\E11A";
-}
+} */

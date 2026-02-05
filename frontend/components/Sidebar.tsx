@@ -2,6 +2,7 @@
 
 import { useLogout } from "@/lib/logout";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Sidebar() {
   const logout = useLogout();
@@ -10,8 +11,8 @@ export default function Sidebar() {
       <div className="scroll-sidebar">
         <nav className="sidebar-nav">
           <ul id="sidebarnav">
-            <br />
-            <br />
+            {/* <br />
+            <br /> */}
             <li>
               <div className="user-profile d-flex no-block dropdown mt-3">
                 <div className="user-pic">
@@ -132,6 +133,9 @@ export default function Sidebar() {
                     {/* <i className="mdi mdi-view-quilt"></i> */}
                     <span className="hide-menu ps-8">Payroll </span>
                   </a>
+                  {/* <Link href="/payroll" className="sidebar-link">
+                    <span className="hide-menu ps-8">Payroll </span>
+                  </Link> */}
                 </li>
               </ul>
             </li>

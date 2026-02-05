@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  
+
   // imp
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className="page-wrapper">
       {/* Bread crumb and right sidebar toggle  */}
-      <div className="page-breadcrumb">
+      <div className="pt-4 pr-5 pl-5">
         <div className="row">
           <div className="col-5 align-self-center">
             <h4 className="page-title">Dashboard</h4>
@@ -48,7 +48,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container-fluid">
+      <div className="pr-5 pl-5">
         <div className="row">
           <div className="col-12">
             <div className="card">
@@ -70,10 +70,16 @@ export default function Home() {
                       </li>
                     </ul>
                     <div className="dl">
-                      <select className="form-select">
+                      {/* <select className="form-select">
                         <option value="0" selected>
                           Monthly
                         </option>
+                        <option value="1">Daily</option>
+                        <option value="2">Weekly</option>
+                        <option value="3">Yearly</option>
+                      </select> */}
+                      <select className="form-select" defaultValue="0">
+                        <option value="0">Monthly</option>
                         <option value="1">Daily</option>
                         <option value="2">Weekly</option>
                         <option value="3">Yearly</option>

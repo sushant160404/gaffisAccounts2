@@ -24,10 +24,10 @@ export default function Header() {
             <b className="logo-icon mx-auto">
               {/* <!--You can put here icon as well // <i className="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon --> */}
-              <br /> {/* added */}
+              {/* <br /> */}
               <Image
                 height={60}
-                width={120}
+                width={70}
                 src="/logo-icon.png"
                 alt="homepage"
                 className="dark-logo"
