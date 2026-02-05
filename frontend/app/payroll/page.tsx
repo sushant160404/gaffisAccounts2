@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown, Edit2, Trash2, Plus, Filter } from "lucide-react";
 import { Eye, Pencil, Download } from "lucide-react";
+import SlideForm from "@/components/SlideForm";
 
 export default function EmployeeDashboard() {
-
   const router = useRouter();
-    // imp
-    useEffect(() => {
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-      if (!isLoggedIn) {
-        router.replace("/login");
-      }
-    }, [router]);
-    
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (!isLoggedIn) {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="page-wrapper">
       <div className="pt-4 pr-5 pl-5">
@@ -51,6 +53,20 @@ export default function EmployeeDashboard() {
       <div className="card">
         <div className="card-body">
           <div className="table-responsive m-t-40"></div>
+          {/*  */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="">Data </div>
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition"
+              onClick={() => setOpen(true)}
+            >
+              Add New
+            </button>
+
+            <SlideForm open={open} setOpenAction={setOpen} />
+          </div>
+
+          {/* Table */}
           <table
             id="config-table"
             className="table display table-bordered table-striped no-wrap"
