@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -32,16 +32,16 @@ export default function AddPayrollUserPage() {
   /* 🔹 Fetch users */
   useEffect(() => {
     fetch("https://gaffis.net/pulse/public/api/teams/active-users")
-      .then(res => res.json())
-      .then(data => setUsers(Array.isArray(data) ? data : data.data || []))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setUsers(Array.isArray(data) ? data : data.data || []))
+      .catch((err) => console.error(err));
   }, []);
 
   /* 🔹 Set due date = 10th */
   useEffect(() => {
     const d = new Date();
     const due = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-10`;
-    setForm(prev => ({ ...prev, due_date: due }));
+    setForm((prev) => ({ ...prev, due_date: due }));
   }, []);
 
   /* 🔹 Auto calculations */
@@ -50,8 +50,9 @@ export default function AddPayrollUserPage() {
     let updated = { ...form, [name]: value };
 
     if (name === "user_id") {
-      const user = users.find(u => String(u.user_id) === String(value));
-      updated.pt_deduction = user?.gender?.toLowerCase() === "female" ? "0" : "200";
+      const user = users.find((u) => String(u.user_id) === String(value));
+      updated.pt_deduction =
+        user?.gender?.toLowerCase() === "female" ? "0" : "200";
     }
 
     const salary = parseFloat(updated.salary) || 0;
@@ -102,7 +103,7 @@ export default function AddPayrollUserPage() {
             Accept: "application/json",
           },
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       const data = await res.json();
@@ -126,20 +127,14 @@ export default function AddPayrollUserPage() {
         setSuccessMessage("");
         router.back();
       }, 1500);
-
     } catch (err) {
       setErrorMessages(["Server error. Please try again later."]);
       setTimeout(() => setErrorMessages([]), 4000);
     }
   };
 
-
-
-
-
   return (
     <div className="mb-2 px-2 page-wrapper">
-
       <div className="pt-4 pr-5 pl-5">
         <div className="row">
           <div className="col-5 align-self-center">
@@ -157,12 +152,14 @@ export default function AddPayrollUserPage() {
               </nav>
             </div>
           </div>
-
         </div>
       </div>
       {/* Success Message */}
       {successMessage && (
-        <div className="alert alert-success alert-dismissible fade show" role="alert">
+        <div
+          className="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
           {successMessage}
           <button
             type="button"
@@ -176,7 +173,10 @@ export default function AddPayrollUserPage() {
 
       {/* Error Messages */}
       {errorMessages.length > 0 && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+        <div
+          className="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
           <ul className="mb-0">
             {errorMessages.map((err, index) => (
               <li key={index}>{err}</li>
@@ -199,18 +199,12 @@ export default function AddPayrollUserPage() {
           encType="multipart/form-data"
           autoComplete="off"
         >
-
           <div className="bg-white rounded px-4 py-2">
-
-
             <div className="row">
               {/* Employee Name */}
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="user_id"
-                  >
+                  <label className="mb-3" htmlFor="user_id">
                     Employee Name <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -230,18 +224,13 @@ export default function AddPayrollUserPage() {
                         </option>
                       ))}
                     </select>
-
                   </div>
                 </div>
               </div>
 
-
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="salary"
-                  >
+                  <label className="mb-3" htmlFor="salary">
                     Total Salary <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -260,10 +249,7 @@ export default function AddPayrollUserPage() {
 
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="basic_pay"
-                  >
+                  <label className="mb-3" htmlFor="basic_pay">
                     Basic Pay <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -281,10 +267,7 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="hr_allowance"
-                  >
+                  <label className="mb-3" htmlFor="hr_allowance">
                     HR Allowance <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -302,11 +285,9 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="conveyence_allowance"
-                  >
-                    Conveyance Allowance <sup className="f-14 mr-1 text-danger">*</sup>
+                  <label className="mb-3" htmlFor="conveyence_allowance">
+                    Conveyance Allowance{" "}
+                    <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
                   <input
@@ -323,11 +304,9 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="other_allowance"
-                  >
-                    Other Allowance <sup className="f-14 mr-1 text-danger">*</sup>
+                  <label className="mb-3" htmlFor="other_allowance">
+                    Other Allowance{" "}
+                    <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
                   <input
@@ -344,10 +323,7 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="tds_deduction"
-                  >
+                  <label className="mb-3" htmlFor="tds_deduction">
                     TDS Deduction <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -365,10 +341,7 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="pt_deduction"
-                  >
+                  <label className="mb-3" htmlFor="pt_deduction">
                     PT Deduction <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -386,11 +359,9 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="other_deduction"
-                  >
-                    Other Deduction <sup className="f-14 mr-1 text-danger">*</sup>
+                  <label className="mb-3" htmlFor="other_deduction">
+                    Other Deduction{" "}
+                    <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
                   <input
@@ -402,17 +373,14 @@ export default function AddPayrollUserPage() {
                     autoComplete="off"
                     value={form.other_deduction}
                     onChange={handleChange}
-
                   />
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="total_deduction"
-                  >
-                    Total Deduction <sup className="f-14 mr-1 text-danger">*</sup>
+                  <label className="mb-3" htmlFor="total_deduction">
+                    Total Deduction{" "}
+                    <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
                   <input
@@ -429,10 +397,7 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="gross_salary"
-                  >
+                  <label className="mb-3" htmlFor="gross_salary">
                     Gross Salary <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -450,11 +415,9 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="inhand_salary"
-                  >
-                    In Hand Salary <sup className="f-14 mr-1 text-danger">*</sup>
+                  <label className="mb-3" htmlFor="inhand_salary">
+                    In Hand Salary{" "}
+                    <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
                   <input
@@ -471,10 +434,7 @@ export default function AddPayrollUserPage() {
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="payment_date"
-                  >
+                  <label className="mb-3" htmlFor="payment_date">
                     Payment Date <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -488,15 +448,11 @@ export default function AddPayrollUserPage() {
                     value={form.payment_date}
                     onChange={handleChange}
                   />
-
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="due_date"
-                  >
+                  <label className="mb-3" htmlFor="due_date">
                     Due Date <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
@@ -510,43 +466,37 @@ export default function AddPayrollUserPage() {
                     value={form.due_date}
                     onChange={handleChange}
                   />
-
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="salary_status"
-                  >
+                  <label className="mb-3" htmlFor="salary_status">
                     Salary Status <sup className="f-14 mr-1 text-danger">*</sup>
                   </label>
 
-                  <select name="salary_status"
+                  <select
+                    name="salary_status"
                     value={form.salary_status}
                     onChange={handleChange}
-                    className="border p-2 w-full">
+                    className="border p-2 w-full"
+                  >
                     <option value="pending">Pending</option>
                     <option value="paid">Paid</option>
                     <option value="cancel">Cancel</option>
                   </select>
-
                 </div>
               </div>
 
               {/* Certification Details */}
               <div className="col-md-12">
                 <div className="form-group my-3">
-                  <label
-                    className="mb-3"
-                    htmlFor="comment"
-                  >
+                  <label className="mb-3" htmlFor="comment">
                     Comment
                   </label>
 
                   <textarea
                     className="form-control f-14 pt-2"
-                    rows="3"
+                    rows={3}
                     placeholder="Enter comment"
                     name="comment"
                     id="comment"
@@ -559,7 +509,11 @@ export default function AddPayrollUserPage() {
 
             {/* Submit */}
             <div className="w-100 border-top-grey d-flex justify-content-end px-4 py-3 gap-2">
-              <button type="button" onClick={() => router.back()} className="bg-gray-300 px-4 py-2 rounded">
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
                 Cancel
               </button>
               <button
@@ -574,8 +528,6 @@ export default function AddPayrollUserPage() {
           </div>
         </form>
       </div>
-
-
     </div>
   );
 }
