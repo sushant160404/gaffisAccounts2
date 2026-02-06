@@ -34,7 +34,7 @@ export default function Sidebar() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <h5 className="mb-0 user-name font-medium">
+                    <h5 className="mb-0 user-name font-medium d-flex">
                       Steave Jobs
                       <i data-feather="chevron-down" className="feather-sm"></i>
                     </h5>
