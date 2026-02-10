@@ -5,6 +5,7 @@ import "./dist/css/style.min.css";
 import "./dist/css/dataTables.bootstrap5.min.css";
 import Script from "next/script";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
