@@ -167,11 +167,11 @@ export default function AddPayrollUserPage() {
         setErrorMessages(["Server returned non-JSON response"]);
         return;
       }
-
+//
       if (!res.ok) {
         if (data.errors) {
           const errors = Object.values(data.errors).flat();
-          setErrorMessages(errors);
+          setErrorMessages([`errors`]);
         } else {
           setErrorMessages([data.message || "Server error"]);
         }
