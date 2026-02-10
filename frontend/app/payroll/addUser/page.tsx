@@ -192,11 +192,8 @@ export default function AddPayrollUserPage() {
   };
 
 
-
-
-
   return (
-    <div className="mb-2 px-2 page-wrapper">
+    <div className="mb-2 px-2 page-wrapper-new">
 
       <div className="pt-4 pr-5 pl-5">
         <div className="row">
