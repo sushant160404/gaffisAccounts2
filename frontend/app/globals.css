@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 html,
 body,
 Main {
@@ -11,3 +13,13 @@ Main {
   display: flex;
   justify-content: center;
 } */
+
+body .page-wrapper-new {
+  margin-left: 250px;
+  padding-top: 64px;
+  transition: margin-left 0.3s ease;
+}
+
+body .mini-sidebar .page-wrapper-new.collapsed {
+  margin-left: 65px;
+}

@@ -15,7 +15,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper-new">
       {/* Bread crumb and right sidebar toggle  */}
       <div className="pt-4 pr-5 pl-5">
         <div className="row">

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AddPayrollUserPage() {
   const router = useRouter();
@@ -9,6 +10,55 @@ export default function AddPayrollUserPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [errors, setErrors] = useState({
+    user_id: false,
+    salary: false,
+    payment_date: false,
+  });
+
+  const userRef = useRef<HTMLSelectElement>(null);
+  const salaryRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+
+  const validateForm = () => {
+    const newErrors = {
+      user_id: !form.user_id,
+      salary: !form.salary,
+      payment_date: !form.payment_date,
+    };
+
+    setErrors(newErrors);
+
+    // Scroll to first error
+    if (newErrors.user_id && userRef.current) {
+      userRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      userRef.current.focus();
+      return false;
+    }
+
+    if (newErrors.salary && salaryRef.current) {
+      salaryRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      salaryRef.current.focus();
+      return false;
+    }
+
+    if (newErrors.payment_date && dateRef.current) {
+      dateRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      dateRef.current.focus();
+      return false;
+    }
+
+    return true;
+  };
+
+
+  const onSaveClick = () => {
+    if (!validateForm()) return;
+    handleSubmit();
+  };
+
+
+
 
   const [form, setForm] = useState({
     user_id: "",
@@ -77,9 +127,9 @@ export default function AddPayrollUserPage() {
     setSuccessMessage("");
     setErrorMessages([]);
 
-    // ✅ sanitize payload
     const payload = {
       ...form,
+      user_id: Number(form.user_id),
       salary: Number(form.salary) || 0,
       basic_pay: Number(form.basic_pay) || 0,
       hr_allowance: Number(form.hr_allowance) || 0,
@@ -92,6 +142,7 @@ export default function AddPayrollUserPage() {
       gross_salary: Number(form.gross_salary) || 0,
       inhand_salary: Number(form.inhand_salary) || 0,
     };
+
     try {
       const res = await fetch(
         "https://gaffis.net/pulse/public/api/payroll/store",
@@ -99,46 +150,50 @@ export default function AddPayrollUserPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
+            "Accept": "application/json",
           },
           body: JSON.stringify(payload),
         }
       );
 
-      const data = await res.json();
 
-      if (!res.ok) {
-        if (data.errors) {
-          setErrorMessages(Object.values(data.errors).flat() as string[]);
-        } else {
-          setErrorMessages([data.message || "Server error"]);
-        }
+      const text = await res.text();
 
-        // auto hide error
-        setTimeout(() => setErrorMessages([]), 4000);
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        setErrorMessages(["Server returned non-JSON response"]);
         return;
       }
 
+      if (!res.ok) {
+        if (data.errors) {
+          const errors = Object.values(data.errors).flat();
+          setErrorMessages(errors);
+        } else {
+          setErrorMessages([data.message || "Server error"]);
+        }
+        return;
+      }
+
+
       setSuccessMessage("Payroll added successfully ✅");
 
-      // auto hide success
       setTimeout(() => {
-        setSuccessMessage("");
-        router.back();
+        toast.success("Payroll saved successfully");
+        router.push("/payroll");
       }, 1500);
 
     } catch (err) {
-      setErrorMessages(["Server error. Please try again later."]);
-      setTimeout(() => setErrorMessages([]), 4000);
+      console.error(err);
+      setErrorMessages(["Network or server error"]);
     }
   };
 
 
-
-
-
   return (
-    <div className="mb-2 px-2 page-wrapper">
+    <div className="mb-2 px-2 page-wrapper-new">
 
       <div className="pt-4 pr-5 pl-5">
         <div className="row">
@@ -216,9 +271,10 @@ export default function AddPayrollUserPage() {
 
                   <div className="form-group mb-0">
                     <select
+                      ref={userRef}
                       name="user_id"
                       id="user_id"
-                      className="form-control select-picker"
+                      className={`form-control select-picker ${errors.user_id ? 'border-danger' : ''}`}
                       value={form.user_id}
                       onChange={handleChange}
                     >
@@ -246,8 +302,9 @@ export default function AddPayrollUserPage() {
                   </label>
 
                   <input
+                    ref={salaryRef}
                     type="number"
-                    className="form-control height-35 f-14"
+                    className={`form-control height-35 f-14 ${errors.salary ? 'border-danger' : ''}`}
                     placeholder=""
                     name="salary"
                     id="salary"
@@ -479,8 +536,9 @@ export default function AddPayrollUserPage() {
                   </label>
 
                   <input
+                    ref={dateRef}
                     type="date"
-                    className="form-control height-35 f-14"
+                    className={`form-control height-35 f-14 ${errors.payment_date ? 'border-danger' : ''}`}
                     placeholder=""
                     name="payment_date"
                     id="payment_date"
@@ -564,7 +622,7 @@ export default function AddPayrollUserPage() {
               </button>
               <button
                 type="button"
-                onClick={handleSubmit}
+                onClick={onSaveClick}
                 className="btn btn-primary rounded f-14 p-2"
                 id="save-payroll-form"
               >

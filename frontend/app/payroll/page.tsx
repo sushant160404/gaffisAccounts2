@@ -4,9 +4,31 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown, Edit2, Trash2, Plus, Filter } from "lucide-react";
 import { Eye, Pencil, Download } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function EmployeeDashboard() {
   const router = useRouter();
+  const [payrolls, setPayrolls] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPayrolls = async () => {
+      try {
+        const res = await fetch(
+          "https://gaffis.net/pulse/public/api/payroll/list"
+        );
+        const data = await res.json();
+        setPayrolls(data);
+      } catch (error) {
+        console.error("Failed to fetch payrolls", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayrolls();
+  }, []);
+
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -15,10 +37,40 @@ export default function EmployeeDashboard() {
     }
   }, [router]);
 
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this payroll?")) return;
+
+    try {
+      const res = await fetch(
+        `https://gaffis.net/pulse/public/api/payroll/delete/${id}`,
+        {
+          method: "POST",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Delete failed");
+        return;
+      }
+
+      toast.success("Payroll deleted successfully");
+
+      // ✅ remove row instantly
+      setPayrolls((prev) =>
+        prev.filter((item) => item.payroll_id !== id)
+      );
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper-new">
       <div className="pt-4 pr-5 pl-5">
         <div className="row">
           <div className="col-5 align-self-center">
@@ -38,263 +90,114 @@ export default function EmployeeDashboard() {
           </div>
           <div className="col-7 align-self-center">
             <div className="d-flex no-block justify-content-end align-items-center">
-              <div className="me-2">
-                <div className="lastmonth"></div>
-              </div>
-              <div className="">
-                <small>LAST MONTH</small>
-                <h4 className="text-info mb-0 font-medium">$58,256</h4>
-              </div>
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition"
+                onClick={() => router.push("/payroll/addUser")}
+              >
+                Add New
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="card">
-        <div className="card-body">
-          <div className="table-responsive m-t-40"></div>
-          {/* Add New Button */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="">Data </div>
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition"
-              onClick={() => router.push("/payroll/addUser")}
-            >
-              Add New
-            </button>
-          </div>
+        <div className="table-responsive card-body">
 
           {/* Table */}
           <table
-            id="config-table"
-            className="table display table-bordered table-striped no-wrap"
+            id="file_export"
+            className="table table-striped table-bordered display text-nowrap"
           >
             <thead>
               <tr>
-                {/* <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
+                <th>Employee</th>
                 <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th> */}
-                <th>User</th>
-                <th>Net Salary</th>
-                <th>Month</th>
+                <th>Basic Pay</th>
+                <th>Total Deduction</th>
+                <th>Inhand Salary</th>
                 <th>Payment Date</th>
+                <th>Due Date</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                {/* <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td> */}
-                <td>Jairo Monahan IV</td>
-                <td>$1,569.5</td>
-                <td>January 2026</td>
-                <td> - </td>
-                <td>Generated</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    {/* View */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Eye size={18} />
-                    </button>
+              {loading && (
+                <tr>
+                  <td colSpan={9} className="text-center">
+                    Loading payrolls...
+                  </td>
+                </tr>
+              )}
 
-                    {/* Edit */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Pencil size={18} />
-                    </button>
+              {!loading && payrolls.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="text-center">
+                    No payroll data found
+                  </td>
+                </tr>
+              )}
 
-                    {/* Delete */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Trash2 size={18} />
-                    </button>
+              {!loading &&
+                payrolls.map((payroll) => {
 
-                    {/* Payroll Slip */}
-                    <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
-                      <Download size={18} />
-                      Payroll Slip
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              {/* user 2  */}
 
-              <tr>
-                {/* <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td> */}
-                <td>Dr. Lance Kshlerin IV</td>
-                <td>$2,072.00</td>
-                <td>January 2026</td>
-                <td> - </td>
-                <td>Generated</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    {/* View */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Eye size={18} />
-                    </button>
+                  return (
+                    <tr key={payroll.payroll_id}>
+                      {/* User */}
+                      <td>{payroll.user?.name ?? "-"}</td>
 
-                    {/* Edit */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Pencil size={18} />
-                    </button>
+                      <td>₹{payroll.salary}</td>
+                      <td>₹{payroll.basic_pay}</td>
+                      <td>₹{payroll.total_deduction}</td>
 
-                    {/* Delete */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Trash2 size={18} />
-                    </button>
+                      {/* Net Salary */}
+                      <td>₹{payroll.inhand_salary}</td>
+                      {/* Payment Date */}
+                      <td>{payroll.payment_date ?? "-"}</td>
 
-                    {/* Payroll Slip */}
-                    <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
-                      <Download size={18} />
-                      Payroll Slip
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              {/* user 3 */}
+                      {/* Month */}
+                      <td>{payroll.due_date ?? "-"}</td>
 
-              <tr>
-                {/* <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td> */}
-                <td>Jairo Monahan IV</td>
-                <td>$1,569.55</td>
-                <td>January 2026</td>
-                <td> - </td>
-                <td>Generated</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    {/* View */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Eye size={18} />
-                    </button>
 
-                    {/* Edit */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Pencil size={18} />
-                    </button>
+                      {/* Status */}
+                      <td className="capitalize">{payroll.salary_status}</td>
 
-                    {/* Delete */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Trash2 size={18} />
-                    </button>
+                      {/* Actions */}
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => router.push(`/payroll/view/${payroll.payroll_id}`)}
+                            className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition"
+                          >
+                            <Eye size={18} />
+                          </button>
 
-                    {/* Payroll Slip */}
-                    <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
-                      <Download size={18} />
-                      Payroll Slip
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                          <button
+                            onClick={() => router.push(`/payroll/edit/${payroll.payroll_id}`)}
+                            className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition"
+                          >
+                            <Pencil size={18} />
+                          </button>
 
-              <tr>
-                {/* <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td> */}
-                <td>Jairo Monahan IV</td>
-                <td>$1,569.55</td>
-                <td>January 2026</td>
-                <td> - </td>
-                <td>Generated</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    {/* View */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Eye size={18} />
-                    </button>
 
-                    {/* Edit */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Pencil size={18} />
-                    </button>
+                          <button
+                            onClick={() => handleDelete(payroll.payroll_id)}
+                            className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
+                            <Trash2 size={18} />
+                          </button>
 
-                    {/* Delete */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Trash2 size={18} />
-                    </button>
-
-                    {/* Payroll Slip */}
-                    <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
-                      <Download size={18} />
-                      Payroll Slip
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                {/* <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td> */}
-                <td>Jairo Monahan IV</td>
-                <td>$1,569.55</td>
-                <td>January 2026</td>
-                <td> - </td>
-                <td>Generated</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    {/* View */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Eye size={18} />
-                    </button>
-
-                    {/* Edit */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Pencil size={18} />
-                    </button>
-
-                    {/* Delete */}
-                    <button className="flex items-center justify-center w-10 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white transition">
-                      <Trash2 size={18} />
-                    </button>
-
-                    {/* Payroll Slip */}
-                    <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
-                      <Download size={18} />
-                      Payroll Slip
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                          <button className="flex items-center gap-2 px-4 h-10 rounded border bg-blue-500 hover:bg-blue-600 text-white font-medium transition">
+                            <Download size={18} />
+                            Payroll Slip
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
+
           </table>
         </div>
       </div>
